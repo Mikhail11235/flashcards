@@ -1,0 +1,12 @@
+frontend/node_modules
+frontend/dist/
+
+/backend/migrations/versions/*
+env
+.env
+__pycache__
+.idea/
+.vscode/
+.DS_Store
+
+notes.txt
