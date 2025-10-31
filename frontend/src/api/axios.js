@@ -1,9 +1,7 @@
 import axios from "axios";
 import { tokenStorage } from "./authHelpers";
 
-const api = axios.create({
-    baseURL: "http://127.0.0.1:8000",
-});
+const api = axios.create({});
 
 let isRefreshing = false;
 let refreshSubscribers = [];
@@ -61,7 +59,7 @@ api.interceptors.response.use(
 async function refreshAccessToken() {
     const refresh = tokenStorage.refresh;
     if (!refresh) throw new Error("no refresh token");
-    const res = await axios.post("http://127.0.0.1:8000/auth/refresh", { refresh });
+    const res = await axios.post('/api/auth/refresh', { refresh });
     const newAccess = res.data.access;
     tokenStorage.set({ access: newAccess, refresh });
     return newAccess;

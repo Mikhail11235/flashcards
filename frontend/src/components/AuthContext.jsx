@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
     const updateSettings = async (settings) => {
         try {
             if (user) {
-                const res = await api.patch("/auth/me", settings);
+                const res = await api.patch("/api/auth/me", settings);
                 const updatedUser = { ...user, ...settings };
                 setUser(updatedUser);
             }
@@ -56,7 +56,7 @@ export function AuthProvider({ children }) {
                 return;
             }
             try {
-                const res = await api.get("/auth/me");
+                const res = await api.get("/api/auth/me");
                 const userData = res.data;
                 applyUserSettings(userData);
                 setUser(userData);
@@ -73,7 +73,7 @@ export function AuthProvider({ children }) {
     const login = async ({ access, refresh }) => {
         tokenStorage.set({ access, refresh });
         try {
-            const res = await api.get("/auth/me");
+            const res = await api.get("/api/auth/me");
             const userData = res.data;
             applyUserSettings(userData);
             setUser(userData);

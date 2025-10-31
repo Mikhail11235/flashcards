@@ -29,14 +29,17 @@ async def api_exception_handler(request, exc: APIException):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://frontend:80"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(auth.router, prefix="/auth", tags=["auth"])
-app.include_router(decks.router, prefix="/api", tags=["decks"])
+app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(decks.router, prefix="/api/decks", tags=["decks"])
 
 
 @app.get("/")

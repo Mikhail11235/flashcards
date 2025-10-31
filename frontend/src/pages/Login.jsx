@@ -30,7 +30,7 @@ function Login() {
     }
 
     try {
-      const res = await api.post("/auth/login", formData);
+      const res = await api.post("/api/auth/login", formData);
       const { access, refresh } = res.data;
       await login({ access, refresh });
       navigate("/");

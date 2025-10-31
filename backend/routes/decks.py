@@ -13,14 +13,14 @@ from utils import APIException
 router = APIRouter()
 
 
-@router.get("/decks")
+@router.get("")
 def get_user_decks(db: Session = Depends(get_db), current_user: User = Depends(get_optional_user)):
     if current_user is None:
         return [{"id": deck.id, "name": deck.name} for deck in DeckService.get_guest_decks(db)]
     return [{"id": deck.id, "name": deck.name} for deck in current_user.decks]
 
 
-@router.post("/decks")
+@router.post("")
 def create_deck(deck_data: deck_schema.DeckCreate, db: Session = Depends(get_db),
                 current_user: User = Depends(get_current_user)):
     if db.query(Deck).filter(Deck.name == deck_data.name, Deck.user_id == current_user.id).first():
@@ -29,7 +29,7 @@ def create_deck(deck_data: deck_schema.DeckCreate, db: Session = Depends(get_db)
     return {"id": deck.id, "name": deck.name}
 
 
-@router.put("/decks/{deck_id}")
+@router.put("/{deck_id}")
 def update_deck(deck_id: int, deck_data: deck_schema.DeckUpdate, db: Session = Depends(get_db),
                 current_user: User = Depends(get_current_user)):
     if db.query(Deck).filter(Deck.name == deck_data.name, Deck.id != deck_id, Deck.user_id == current_user.id).first():
@@ -41,7 +41,7 @@ def update_deck(deck_id: int, deck_data: deck_schema.DeckUpdate, db: Session = D
     return {"id": deck.id, "name": deck.name}
 
 
-@router.delete("/decks/{deck_id}")
+@router.delete("/{deck_id}")
 def delete_deck(deck_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
     if not deck:
@@ -50,7 +50,7 @@ def delete_deck(deck_id: int, db: Session = Depends(get_db), current_user: User 
     return {"status": True}
 
 
-@router.get("/decks/{deck_id}/cards")
+@router.get("/{deck_id}/cards")
 def get_deck_cards(deck_id: int, db: Session = Depends(get_db),
                    current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
@@ -60,7 +60,7 @@ def get_deck_cards(deck_id: int, db: Session = Depends(get_db),
     return {"cards": [{"entry": card.entry, "value": card.value} for card in cards]}
 
 
-@router.put("/decks/{deck_id}/cards")
+@router.put("/{deck_id}/cards")
 def update_deck_cards(deck_id: int, cards_data: deck_schema.Cards, db: Session = Depends(get_db),
                       current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
@@ -70,7 +70,7 @@ def update_deck_cards(deck_id: int, cards_data: deck_schema.Cards, db: Session =
     return {"cards": [{"entry": card.entry, "value": card.value} for card in cards]}
 
 
-@router.get("/decks/{deck_id}/export")
+@router.get("/{deck_id}/export")
 def export_deck_cards(deck_id: int, db: Session = Depends(get_db),
                       current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
@@ -83,7 +83,7 @@ def export_deck_cards(deck_id: int, db: Session = Depends(get_db),
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
 
-@router.post("/decks/{deck_id}/import")
+@router.post("/{deck_id}/import")
 def import_excel(deck_id: int, file: UploadFile = File(..., max_size=500 * 1024),
                  db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
@@ -106,7 +106,7 @@ def import_excel(deck_id: int, file: UploadFile = File(..., max_size=500 * 1024)
     return {"status": True}
 
 
-@router.post("/decks/{deck_id}/next-card")
+@router.post("/{deck_id}/next-card")
 def get_next_card(deck_id: int, data: deck_schema.NextCard, db: Session = Depends(get_db),
                   current_user: User = Depends(get_optional_user)):
     if current_user is not None:
@@ -129,7 +129,7 @@ def get_next_card(deck_id: int, data: deck_schema.NextCard, db: Session = Depend
     }
 
 
-@router.patch("/decks/{deck_id}/toggle_learned")
+@router.patch("/{deck_id}/toggle_learned")
 def toggle_learned(deck_id: int, data: deck_schema.ToggleLearned, db: Session = Depends(get_db),
                    current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
@@ -145,7 +145,7 @@ def toggle_learned(deck_id: int, data: deck_schema.ToggleLearned, db: Session = 
     return {"learned": progress.learned, "stats": stats}
 
 
-@router.delete("/decks/{deck_id}/reset")
+@router.delete("/{deck_id}/reset")
 def reset_progress(deck_id: int, db: Session = Depends(get_db),
                    current_user: User = Depends(get_current_user)):
     deck = DeckService.get_user_deck(db, deck_id, current_user.id)
