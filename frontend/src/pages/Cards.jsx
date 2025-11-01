@@ -199,7 +199,7 @@ function Cards() {
               className='button-small'
               onClick={() => setShowRulesModal(true)}
             >
-              ℹ
+              &#8505;
             </button>
             <button
               className='button-small'
