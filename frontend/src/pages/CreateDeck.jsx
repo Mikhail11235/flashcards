@@ -27,7 +27,7 @@ function CreateDeck() {
             return;
         }
         try {
-            await api.post("api/api/decks", formData);
+            await api.post("/api/decks", formData);
             navigate("/edit-decks");
         } catch (err) {
             let msg = t('error.create_deck');

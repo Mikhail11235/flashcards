@@ -29,7 +29,7 @@ function EditDeck() {
             return;
         }
         try {
-            await api.put(`api/api/decks/${deck_id}`, formData);
+            await api.put(`/api/decks/${deck_id}`, formData);
             navigate("/edit-decks");
         } catch (err) {
             let msg = t('error.edit');
