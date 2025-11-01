@@ -184,7 +184,7 @@ function Cards() {
         <RestartModal
           hideRestart={true}
           onReset={handleModalRestart}
-          message={t('finish_guest', { deck_name: deck_name })}
+          message={t('finish_restart', { deck_name: deck_name })}
           resetText={t('restart')}
         />
       )}
