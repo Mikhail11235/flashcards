@@ -79,6 +79,7 @@ input {
   appearance: none;
   background: none;
   border: 1px solid var(--main-color);
+  border-radius: 0;
   outline: none;
   width: 100%;
   color: var(--main-color);
@@ -313,17 +314,30 @@ button {
   text-overflow: ellipsis;
 }
 
-.scroll-container::-webkit-scrollbar {
-     width: 20px;
+.scroll-container span {
+  width: 176px;
+  align-self: center;
+  text-align: center;
 }
 
-.scroll-container::-webkit-scrollbar-track {
-    background: var(--bg-color);
-    border: 1px solid var(--main-color);
+.custom-scrollbar .ScrollbarsCustom-TrackY {
+  width: 20px !important;
+  background: var(--bg-color) !important;
+  border: 1px solid var(--main-color) !important;
+  border-radius: 0 !important;
+  right: 0 !important;
+  height: 100% !important;
+  top: 0 !important;
 }
 
-.scroll-container::-webkit-scrollbar-thumb {
-    background: var(--main-color);
+.custom-scrollbar .ScrollbarsCustom-ThumbY {
+  background: var(--main-color) !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+}
+
+.custom-scrollbar .ScrollbarsCustom-Wrapper {
+  width: 176px !important;
 }
 
 .scroll-container span {

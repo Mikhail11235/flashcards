@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useTranslation } from 'react-i18next';
+import CustomScrollComponent from '../components/CustomScrollComponent';
 import api from "../api/axios";
 
 
@@ -208,57 +209,59 @@ function EditCards() {
                                     </tr>
                                 </tbody>
                             </table>
-                            {filteredCards.length ?
-                                <table
-                                    className='cards-table'
-                                    ref={cardsTableRef}
-                                >
-                                    <colgroup>
-                                        <col width={78} />
-                                        <col width={78} />
-                                        <col width={20} />
-                                    </colgroup>
-                                    <tbody>
-                                        {filteredCards.map((card, index) => {
-                                            return (
-                                                <tr
-                                                    key={card.id}
-                                                    onClick={() => handleRowClick(index)}
-                                                    className={activeRow === index ? 'active' : ''}
-                                                >
-                                                    <td>
-                                                        <input
-                                                            type="text"
-                                                            value={card.entry}
-                                                            onChange={(e) => handleCardChange(index, 'entry', e.target.value)}
-                                                            className={isDuplicateEntry(card) ? 'error' : ''}
-                                                        />
-                                                    </td>
-                                                    <td style={{ borderRight: "none" }}>
-                                                        <input
-                                                            type="text"
-                                                            value={card.value}
-                                                            onChange={(e) => handleCardChange(index, 'value', e.target.value)}
-                                                            className={isDuplicateEntry(card) ? 'error' : ''}
-                                                        />
-                                                    </td>
-                                                    <td
-                                                        className={`card-action ${activeRow === index ? 'show' : ''}`}
-                                                        style={{ padding: "0", borderLeft: "none" }}
+                            <CustomScrollComponent height="100px">
+                                {filteredCards.length ?
+                                    <table
+                                        className='cards-table'
+                                        ref={cardsTableRef}
+                                    >
+                                        <colgroup>
+                                            <col width={78} />
+                                            <col width={78} />
+                                            <col width={20} />
+                                        </colgroup>
+                                        <tbody>
+                                            {filteredCards.map((card, index) => {
+                                                return (
+                                                    <tr
+                                                        key={card.id}
+                                                        onClick={() => handleRowClick(index)}
+                                                        className={activeRow === index ? 'active' : ''}
                                                     >
-                                                        <button
-                                                            className="button-action"
-                                                            onClick={(e) => handleDeleteCard(index, e)}
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                value={card.entry}
+                                                                onChange={(e) => handleCardChange(index, 'entry', e.target.value)}
+                                                                className={isDuplicateEntry(card) ? 'error' : ''}
+                                                            />
+                                                        </td>
+                                                        <td style={{ borderRight: "none" }}>
+                                                            <input
+                                                                type="text"
+                                                                value={card.value}
+                                                                onChange={(e) => handleCardChange(index, 'value', e.target.value)}
+                                                                className={isDuplicateEntry(card) ? 'error' : ''}
+                                                            />
+                                                        </td>
+                                                        <td
+                                                            className={`card-action ${activeRow === index ? 'show' : ''}`}
+                                                            style={{ padding: "0", borderLeft: "none" }}
                                                         >
-                                                            ✕
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                                : <span>{t('no_cards')}</span>}
+                                                            <button
+                                                                className="button-action"
+                                                                onClick={(e) => handleDeleteCard(index, e)}
+                                                            >
+                                                                ✕
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                    : <span>{t('no_cards')}</span>}
+                            </CustomScrollComponent>
                         </div>
                         <button
                             onClick={handleAddEmptyRow}
