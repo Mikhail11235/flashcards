@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class DeckCreate(BaseModel):
@@ -8,6 +8,10 @@ class DeckCreate(BaseModel):
 
 class DeckUpdate(BaseModel):
     name: str
+
+
+class DeckList(BaseModel):
+    show_all: bool = False
 
 
 class Card(BaseModel):

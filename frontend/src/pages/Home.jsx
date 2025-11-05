@@ -17,7 +17,7 @@ function Menu() {
   useEffect(() => {
     const fetchDecks = async () => {
       try {
-        const response = await api.get("/api/decks");
+        const response = await api.get("/api/decks?show_all=1");
         const decksData = response.data;
         const formattedDecks = decksData.map(deck => ({
           value: deck.id,

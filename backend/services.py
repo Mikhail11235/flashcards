@@ -38,28 +38,29 @@ class UserService:
 
 class DeckService:
     @staticmethod
-    def get_user_deck(db: Session, deck_id: int, user_id: int):
-        deck = db.query(Deck).filter(Deck.id == deck_id, Deck.user_id == user_id).first()
+    def get_user_deck(db: Session, deck_id: int, user_id: int = None, show_all: bool = False):
+        base_query = db.query(Deck).filter(Deck.id == deck_id)
+        if show_all:
+            base_query = base_query.filter((Deck.user_id.is_(None)) | (Deck.user_id == user_id))
+        elif user_id is None:
+            base_query = base_query.filter(Deck.user_id.is_(None))
+        else:
+            base_query = base_query.filter(Deck.user_id == user_id)
+        deck = base_query.first()
         if not deck:
             return None
         return deck
 
     @staticmethod
-    def get_user_decks(db: Session, user_id: int):
-        decks = db.query(Deck).filter(Deck.user_id == user_id).all()
-        return decks
-
-    @staticmethod
-    def get_guest_deck(db: Session, deck_id: int):
-        deck = db.query(Deck).filter(Deck.id == deck_id,
-                                     Deck.user_id.is_(None)).first()
-        if not deck:
-            return None
-        return deck
-
-    @staticmethod
-    def get_guest_decks(db: Session):
-        decks = db.query(Deck).filter(Deck.user_id.is_(None)).all()
+    def get_user_decks(db: Session, user_id: int = None, show_all: bool = False):
+        base_query = db.query(Deck)
+        if show_all:
+            base_query = base_query.filter((Deck.user_id.is_(None) | (Deck.user_id == user_id)))
+        elif user_id is None:
+            base_query = base_query.filter(Deck.user_id.is_(None))
+        else:
+            base_query = base_query.filter(Deck.user_id == user_id)
+        decks = base_query.all()
         return decks
 
     @staticmethod
@@ -216,7 +217,6 @@ class DeckService:
             "learned": False
         }
         return progress_card, remain - 1
-
 
     @staticmethod
     def toggle_learned(db: Session, user_id: int, deck: Deck, card: Card):
