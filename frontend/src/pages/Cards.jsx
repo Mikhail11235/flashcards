@@ -201,13 +201,13 @@ function Cards() {
             >
               i
             </button>
-            <button
+            {isAuthenticated && (<button
               className='button-small'
               onClick={() => setShowResetModal(true)}
               disabled={loading}
             >
               ↺
-            </button>
+            </button>)}
             <button
               className='button-small'
               onClick={() => navigate("/")}
